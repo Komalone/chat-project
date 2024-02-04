@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+body{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Times New Roman', Times, serif;
+}
+.row .signup{
+    display: none;
+}
+#check:checked ~ .signup{
+    display: block;
+}
+#check:checked ~ .signin{
+    display: none;
+}
+form{
+    width: 25rem;
+    margin: 0 5rem;
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    border-style: outset;
+    background-color: rgb(160 174 185 / 15%)
+}
+.btn{
+    color: azure;
+    background-color: rgb(156, 56, 17);
+}
+
+.bg-image-vertical {
+    position: relative;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    background-position: right center;
+    background-size: auto 100%;
+}
