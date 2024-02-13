@@ -5,6 +5,14 @@ body{
   box-sizing: border-box;
   font-family: 'Times New Roman', Times, serif;
 }
+.register{
+    background-image: url("../img/chat-message.jpg");
+    background-size: contain;
+    background-position: right;
+    background-repeat: no-repeat;
+    max-width: 100%;
+    width: 70rem;
+}
 .row .signup{
     display: none;
 }
@@ -20,17 +28,11 @@ form{
     padding: 1rem 2rem;
     border-radius: 10px;
     border-style: outset;
-    background-color: rgb(160 174 185 / 15%)
+    background-color: #75969ce6;
 }
 .btn{
     color: azure;
     background-color: rgb(156, 56, 17);
 }
 
-.bg-image-vertical {
-    position: relative;
-    overflow: hidden;
-    background-repeat: no-repeat;
-    background-position: right center;
-    background-size: auto 100%;
-}
+
