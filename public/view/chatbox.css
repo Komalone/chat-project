@@ -1,0 +1,57 @@
+body{
+    height: 100vh;
+    background-color:rgb(242 242 242);
+}
+.bttn{
+    border-radius: 10px;
+    padding: 3px 15px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    background-color:rgb(104, 173, 176);
+}
+.bttn:hover{
+    background-color: rgb(69, 129, 130);
+}
+
+.navbar-toggler{
+    border: none;
+    display: none;
+}
+
+.contactbody{
+    height: 489px;
+    border: outset;
+    background-color:rgb(246 246 239 / 78%);
+}
+.contactbody img{
+    height: 60px;
+    width: 70px;
+    border-radius: 50%;
+}
+
+.list-group-item{
+    border: none;
+    background: none;
+}
+.list-group-item:hover{
+    background-color:rgb(187, 183, 175);
+}
+
+.messagebox{
+    height: 367px;
+    border-left: 3px solid rgb(212, 212, 212);
+    background-color: #fff7f4
+}
+.writepad{
+    background-color: #ffffff;
+    border-left: 3px solid rgb(212, 212, 212);
+}
+@media (max-width : 600px){
+    .bttn{
+        display: none;
+    }
+    .navbar-toggler{
+        display: block;
+    }
+}
+
