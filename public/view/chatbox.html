@@ -117,5 +117,23 @@
         </div>
       </div>
       </section>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script> 
+    
+  <script>
+    async function chatData(event){
+      event.preventDefault();
+
+      const message= document.getElementById('message').value;
+      const obj= { message }
+      try{
+        const token= localStorage.getItem('token');
+        const response=await axios.post('http://localhost:3000/chat', obj, {headers :{'Authorization': token}})
+      }catch(err){
+        console.log(err)
+      }
+
+    }
+  </script>
+    
 </body>
 </html>

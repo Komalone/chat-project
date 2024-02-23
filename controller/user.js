@@ -40,7 +40,7 @@ exports.userSignup= async(req, res)=>{
 
 
 function generateAccessToken(id, name){
-    return jwt.sign({userId: id, name: name}, tokenKK76354igjhf)
+    return jwt.sign({userId: id, name: name}, "token9876354igjhf")
 }
 
 exports.userLogin= async(req, res)=>{
