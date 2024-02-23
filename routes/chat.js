@@ -2,7 +2,7 @@ const express=require('express')
 const router=express.Router()
 const path=require('path')
 const cors=require('cors');
-const sequelize= require('../util/tickTalk');
+
 const authentication= require('../middleware/auth');
 const chatController= require('../controller/chat')
 
@@ -15,7 +15,7 @@ router.get('/chat',(req,res)=>{
     res.sendFile(path.join(__dirname,'..','html','chat.html'))
 })
 
-router.post('/chat',chatauthentication.authenticate,chatController.userChat)
-
+router.post('/chat', authentication,chatController.postChat)
+router.get('/chat/user', authentication,chatController.getChat)
 
 module.exports=router;

@@ -92,7 +92,7 @@
               </div>
 
             <div class="row messagebox border-4 border-bottom py-2">
-              <div class="col-12"></div>
+              <div class="col-12" id="messagebox"></div>
             </div>
 
             <div class="row writepad">
@@ -133,6 +133,52 @@
       }
 
     }
+
+  window.addEventListener('DOMContentLoaded', async()=>{
+    fetchData();
+    setInterval(fetchData, 2000)
+  }
+  ) 
+  
+  async function fetchData(){
+      try{
+      const token=localStorage.getItem('token')           
+      const response= await axios.get('http://localhost:3000/chat/user', { headers: {"Authorization" : token} }) 
+      if(response.status === 200){
+      console.log(response.data.allChatData)
+      const data=response.data.allChatData;
+      showChats(data)
+      }else{
+        throw new Error();
+      }
+      }catch(err){
+    console.log(err)
+      }
+    }
+
+  function showChats(message) {      
+    
+    const messagescreen = document.getElementById('messagebox'); 
+     messagescreen.innerHTML = '';
+    message.forEach(chat => {              
+    const divItem=document.createElement('div')
+      divItem.style.border='1px solid black'
+      divItem.style.width='40%'
+      divItem.style.padding='10px 10px'
+      divItem.style.margin='12px 5px'
+      divItem.style.borderRadius='0px 12px 10px 10px'
+      divItem.style.backgroundColor='#fdfdfd'
+
+      const listItem = document.createElement('li');
+      listItem.style.listStyle='none'
+      listItem.textContent = chat.message; 
+
+      divItem.appendChild(listItem)
+      messagescreen.appendChild(divItem);                
+   })
+          
+}
+
   </script>
     
 </body>

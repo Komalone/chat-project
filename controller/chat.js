@@ -9,7 +9,7 @@ const cors=require('cors');
 router.use(cors())
 router.use(express.json());
 
-exports.userMessage=async (req, res)=>{
+exports.postChat=async (req, res)=>{
     const t= await sequelize.transaction();
     try{
         const message= req.body.message;
@@ -29,5 +29,18 @@ exports.userMessage=async (req, res)=>{
         console.log('in chat controller', err);
         await t.rollback()
         res.status(500).json({error: err})
+    }
+}
+
+exports.getChat=async (req,res)=>{
+    try{
+        const chatdata= await Chat.findAll({
+            where:{userId:req.user.id}
+        })
+        res.status(200).json({allChatData:chatdata})
+    }
+    catch(err){
+        console.log(err)
+        res.status(500).json({error:err})
     }
 }
