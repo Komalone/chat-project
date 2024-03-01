@@ -45,16 +45,86 @@
           <div class="col-lg-4 contactbody mx-1">
 
             <div class="row border-4 border-bottom py-1">
-              <div class="col-3 d-flex justify-content-center">
-                <img src="../img/komal gurudwara.jpeg" alt="">
+              <div class="col-9 d-flex ">
+                <!-- <img src="../img/komal gurudwara.jpeg" alt=""> -->
+                <i class="bi-person-circle text-center fs-1 px-2"></i>
+                <div id="userprofilename"></div>
+                <p id="profilestatusupdate"></p>
               </div>
-              <div class="col-8 d-flex align-items-center justify-content-end">
-                <i class="bi bi-chat-right-text-fill fs-2"></i>
+              <div class="col-3 d-flex align-items-center">
+                <!-- <i class="bi bi-chat-right-text-fill fs-2"></i> -->
+                <div class="container">
+                  <div class="row">
+
+                      <div class="dropdown">
+                          <i class="bi bi-three-dots-vertical py-2 fs-3 " id="dropdownMenuButton1" data-toggle="dropdown" aria-expanded="false"></i>                
+                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" href="#">New Group</a></li>
+                            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#statusModal" data-bs-whatever="@mdo" href="#">Status</a></li>                  
+                            <li><a class="dropdown-item" href="login.html">Log out</a></li>
+                          </ul>
+                      </div> 
+
+                      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Create a Group</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <form method="post" onsubmit="modal1(event)">
+                                  <div class="mb-3">
+                                    <label for="proname" class="col-form-label">Add group participant</label>
+                                    <input type="text" class="form-control" id="proname">
+                                  </div>
+                                  <div class="mb-3">
+                                    <label for="proname" class="col-form-label">Add group name</label>
+                                    <input type="text" class="form-control" id="groupname">
+                                  </div>
+
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Create</button>
+                              </div>
+                            </form>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleStatusModalLabel">Edit Status</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                              </div>
+                              <div class="modal-body">
+                                <form  onsubmit="status1(event)">
+                                  <div class="mb-3">
+                                    <label for="statusupdate" class="col-form-label">Add New Status</label>
+                                    <input type="text" class="form-control" id="statusupdate">
+                                  </div>                                          
+
+                              </div>
+                              <div class="modal-footer">
+                                <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+                                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Create</button>
+                              </div>
+                            </form>
+                            </div>
+                          </div>
+                        </div>                         
+
+
+                    </div>
+                  </div>
               </div>
             </div>
 
             <div class="list-group">
-              <div class="list-group-item d-flex align-items-center py-2">
+              <!-- <div class="list-group-item d-flex align-items-center py-2">
                 <div class="col-2 d-flex">
                 <i class="bi-person-circle text-center fs-2"></i>
                 </div>
@@ -62,16 +132,11 @@
                 <h5 style="margin: 0;">Name 1</h5>
                 <i class="bi bi-circle-fill " style="color: green; font-size: 13px;"> Online</i> 
                 </div>
+              </div> -->
+              <div class="list-group-item d-flex align-items-center py-2" id="friendlist">
+
               </div>
-              <div class="list-group-item d-flex align-items-center py-2">
-                <div class="col-2 d-flex">
-                <i class="bi-person-circle text-center fs-2"></i>
-                </div>
-                <div class="col-8 list ">
-                <h5 style="margin: 0cap;">Name 2</h5>
-                <i class="bi bi-circle-fill " style="color: red; font-size: 13px;"> Offline</i> 
-                </div>
-              </div>
+              
             </div>
 
           </div>
@@ -92,7 +157,11 @@
               </div>
 
             <div class="row messagebox border-4 border-bottom py-2">
-              <div class="col-12" id="messagebox"></div>
+              <div class="col-12" >
+                <ul id="messagebox">
+
+                </ul>
+              </div>
             </div>
 
             <div class="row writepad">
@@ -204,6 +273,68 @@ function parseJwt (token) {
     return JSON.parse(jsonPayload);
 }
 
+
+let max_user=5;
+async function userList(){
+  try{
+    const parentElement= document.getElementById('friendlist');
+    const response= await axios.get('http://localhost:3000/chat/group');
+    const data= response.data.allUser; 
+    const allUserData= data.slice(-max_user);
+    localStorage.setItem("allUserdetails", JSON.stringify(allUserData));
+
+    if(response.status === 200){
+      console.log("userList data",data)
+      data.forEach(user =>{
+        const divItem = document.createElement('li');              
+                divItem.style.display = 'block'; 
+                divItem.style.padding = '5px 10px';
+                divItem.style.margin = '0px 5px';
+                divItem.style.border = '1px 0px';
+
+                 // Create an anchor tag and set its attributes
+                 const anchorTag = document.createElement('a');
+                 anchorTag.style.textDecoration='none'
+                anchorTag.href = '#' + user.name.toLowerCase(); // Set a unique URL using user name
+                anchorTag.textContent = user.name;
+                // Append the anchor tag to the list item
+                divItem.appendChild(anchorTag);         
+
+                parentElement.appendChild(divItem);
+                const lineBreak = document.createElement('br');
+                parentElement.appendChild(lineBreak);
+      })
+    }else{
+      throw new Error();
+    }
+  }catch(err){
+    console.log("error in userlist", err)
+  }
+}
+userList();
+async function modal1(event){
+        event.preventDefault();
+        var name=document.getElementById('proname').value
+        var group=document.getElementById('groupname').value
+
+        const obj={
+            name,group
+        }
+        console.log(obj)
+
+    }
+
+     function status1(event){
+        event.preventDefault();
+        var name=document.getElementById('statusupdate').value       
+
+        const obj={
+            name,
+        }        
+        localStorage.setItem('statusUpdate',JSON.stringify(obj)) 
+
+    }
+
 function userProfileVisible(){
     const token=localStorage.getItem('token')
         const decodeToken=parseJwt(token)       
@@ -216,6 +347,12 @@ function userProfileVisible(){
 }
 
 userProfileVisible()
+updatestatus()    
+function updatestatus(){
+    const savedStatus = JSON.parse(localStorage.getItem('statusUpdate'));
+    const status = document.getElementById('profilestatusupdate');
+    status.textContent = savedStatus.name;
+}
 
   </script>
     

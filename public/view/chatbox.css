@@ -30,8 +30,9 @@ body{
 }
 
 .list-group-item{
-    border: none;
     background: none;
+    border: none;
+    border-bottom: 1px solid darkslategray;
 }
 .list-group-item:hover{
     background-color:rgb(187, 183, 175);
