@@ -75,4 +75,13 @@ exports.userLogin= async(req, res)=>{
     }
 }
 
-module.exports= { generateAccessToken};
+exports.getAllUser= async(req, res)=>{
+    try{
+        const user= await User.findAll();
+        return res.status(200).json({success: true, allUserData: user});
+    }catch(err){
+        console.log(err);
+    }
+}
+
+//module.exports= { generateAccessToken};

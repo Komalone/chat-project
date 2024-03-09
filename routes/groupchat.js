@@ -1,9 +1,8 @@
 const express=require('express')
 const router=express.Router()
-const chatController=require('../controllers/chat')
-const groupController=require('../controllers/groupchat')
+const chatController=require('../controller/chat')
+const groupController=require('../controller/groupchat')
 
-const chatauthentication=require('../middleware/auth')
 const path=require('path')
 const cors=require('cors');
 router.use(cors())

@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" 
     integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" 
     crossorigin="anonymous">
-    <link href="/public/view/register.css" rel="stylesheet" />
+    <link href="/register.css" rel="stylesheet" />
 </head>
 <body>
     <section class="vh-100 register">
@@ -33,7 +33,7 @@
               <div class="d-flex align-items-center px-3 ms-xl-4 mt-3 pt-xl-0 mt-xl-n5">
                 <input class="d-none" type="checkbox" id="check">
                 <div class="signin form">
-                <form class="signin" method="post">
+                <form class="signin" method="post" onsubmit="login(event)">
       
                   <h3 class="fs-2 mb-2 pb-3 fw-bold" >Log In</h3>
       
@@ -57,7 +57,7 @@
                 </form>
             </div>
             <div class="signup form">
-                <form method="post">
+                <form method="post" onsubmit="Registration(event)">
       
                     <h3 class="fs-2 mb-2 pb-3 fw-bold" >Sign Up</h3>
 
@@ -107,8 +107,8 @@
           name, email, password
         }
         try{
-          //const response= await axios.post('http://localhost:3000/user/signup', obj)
-          //const data= response.data
+          const response= await axios.post('http://localhost:3000/signup', obj)
+          const data= response.data
           console.log("signup",obj)
   
           if(response.status === 201){
@@ -132,8 +132,8 @@
         }
         console.log(obj)
         try{
-          const response= await axios.post('http://localhost:3000/user/login', obj)
-          //const data= response.data
+          const response= await axios.post('http://localhost:3000/login', obj)
+          const data= response.data
           console.log("login", response)
           localStorage.setItem('token', response.data.token)
           if(response.status === 200){

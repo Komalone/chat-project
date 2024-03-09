@@ -1,8 +1,8 @@
-const express= require('express');
+const express= require('express')
 const router= express.Router();
 
 const path=require('path')
-const userController=require('../controllers/user')
+const userController=require('../controller/user')
 const bodyParser=require('body-parser')
 router.use(express.json());
 const cors=require('cors');
@@ -13,12 +13,13 @@ router.use(bodyParser.urlencoded({extended:false}))
 
 
 router.get('/',(req,res)=>{
-    res.sendFile(path.join(__dirname,'public','view','register.html'))
+    res.sendFile(path.join(__dirname ,'..' ,'public','view','register.html'))
 })
 
-router.post('/user/signup',userController.postUser)
+ router.post('/signup',userController.userSignup)
 
-router.post('/user/login',userController.getUser)
+ router.post('/login',userController.userLogin)
 
+ router.get('/alluser',userController.getAllUser )
 
 module.exports=router
