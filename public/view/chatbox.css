@@ -13,9 +13,17 @@ body{
     background-color: rgb(69, 129, 130);
 }
 
+.button1{
+    padding: 0px 8px;
+    border-radius: 10px;
+}
+
 .navbar-toggler{
     border: none;
     display: none;
+}
+section{
+    font-family:Georgia, 'Times New Roman', Times, serif;
 }
 
 .contactbody{
@@ -32,7 +40,7 @@ body{
 .list-group-item{
     background: none;
     border: none;
-    border-bottom: 1px solid darkslategray;
+    border-bottom: 1px solid #8f9494;
 }
 .list-group-item:hover{
     background-color:rgb(187, 183, 175);

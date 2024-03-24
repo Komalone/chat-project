@@ -31,7 +31,7 @@
       <div class="container d-flex">
         <a class="navbar-brand px-3 fs-2" style="font-family: 'Merienda'; font-weight: 600; color: cadetblue;" href="#">Tick-Talk</a>
         <div class="d-flex">
-             <a href="/register.html"><button class="bttn mx-3">Logout</button></a>                                        
+             <a href="/register.html"><button class="bttn mx-3" onclick="logout()">Logout</button></a>                                        
         </div>
         <div class="navbar-toggler fs-3 mx-3">
             <a style="color: #439395;" href="/public/view/register.html"><i class="fa-solid fa-right-from-bracket"></i></a>
@@ -45,11 +45,10 @@
           <div class="col-lg-4 contactbody mx-1">
 
             <div class="row border-4 border-bottom py-1">
-              <div class="col-9 d-flex ">
+              <div class="col-9 d-flex align-items-center ">
                 <!-- <img src="../img/komal gurudwara.jpeg" alt=""> -->
                 <i class="bi-person-circle text-center fs-1 px-2"></i>
                 <div id="userprofilename"></div>
-                <p id="profilestatusupdate"></p>
               </div>
               <div class="col-3 d-flex align-items-center">
                 <!-- <i class="bi bi-chat-right-text-fill fs-2"></i> -->
@@ -57,11 +56,11 @@
                   <div class="row">
 
                       <div class="dropdown">
-                          <i class="bi bi-three-dots-vertical py-2 fs-3 " id="dropdownMenuButton1" data-toggle="dropdown" aria-expanded="false"></i>                
+                          <i class="bi bi-three-dots-vertical py-2 fs-3 " id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>                
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                             <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" href="#">New Group</a></li>
                             <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#statusModal" data-bs-whatever="@mdo" href="#">Status</a></li>                  
-                            <li><a class="dropdown-item" href="register.html">Log out</a></li>
+                            <li><a class="dropdown-item" href="register.html" onclick="logout()">Log out</a></li>
                           </ul>
                       </div> 
 
@@ -75,11 +74,11 @@
                               <div class="modal-body">
                                 <form method="post" onsubmit="createGroup(event)">
                                   <div class="mb-3">
-                                    <label for="proname" class="col-form-label">Add group participant</label>
-                                    <input type="text" class="form-control" id="proname">
+                                    <label for="proname" class="col-form-label">Add group name</label>
+                                    <input type="text" class="form-control" id="groupname">
                                   </div>
                                   <div class="mb-3">
-                                    <label for="proname" class="col-form-label">Add group name</label>
+                                    <label for="proname" class="col-form-label">Add group participants</label>
                                     <div class="dropdown">
                                       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                         Select Participant
@@ -130,24 +129,13 @@
               </div>
             </div>
 
-            <div class="list-group">
-              <!-- <div class="list-group-item d-flex align-items-center py-2">
-                <div class="col-2 d-flex">
-                <i class="bi-person-circle text-center fs-2"></i>
-                </div>
-                <div class="col-8 list ">
-                <h5 style="margin: 0;">Name 1</h5>
-                <i class="bi bi-circle-fill " style="color: green; font-size: 13px;"> Online</i> 
-                </div>
-              </div> -->
-              <div class="list-group-item d-flex align-items-center py-2" id="friendlist">
+            <div class="list-group" id="friendlist">
 
-              </div>
               
             </div>
 
           </div>
-
+<!-- chating body with messages and chat name  -->
           <div class="col chatbody mx-1">
               <div class="row border-4 border-bottom py-1" style="height: 73px;">
                 <div class="col-lg-1 d-flex">
@@ -179,15 +167,15 @@
               <div class="col-12 py-1">
                 <form method="post" onsubmit="chatData(event)">
                   <div class="row">
-                    <div class="col-lg-9">
+                    <div class="col-lg-8">
                       <input class="form-control" type="text" name="message" id="message">
                     </div>
-                    <div class="col-lg-3">
-                    <button class="button1" type="submit"><i class="bi-send fs-3" style="color: #0659ea;"></i></button>
-                      <i class="bi bi-paperclip mx-1 fs-3"></i> 
-                      <input type="file" id="chatFile" accept="image/*, video/*" />                                
-                      <i class="bi bi-camera mx-1 fs-3" style="color: #0b5be5;"></i>
+                    <div class="col-lg-4 d-flex p-0">
+                    <button class="button1" type="submit"><i class="bi-send fs-4" style="color: #0659ea;"></i></button>
+                      <!-- <i class="bi bi-paperclip mx-1 fs-3"></i>  -->                                              
+                      <!-- <i class="bi bi-camera mx-1 fs-3" style="color: #0b5be5;"></i> -->
                       <i class="fa-regular fa-face-smile mx-2 fs-3" style="color: #3253f5;"></i>
+                      <input type="file" id="chatFile" accept="image/*, video/*" /> 
                     </div>
                   </div>
                 </form>
@@ -219,16 +207,16 @@ async function chatData(event){
     const currentUserId= decodedToken.userId;
       event.preventDefault();
 
-      const message= document.getElementById('message').value;
+      const text= document.getElementById('message').value;
       const selectedGroupId= localStorage.getItem('selectedGroupId');
 
       const obj= { 
-        message,
+        text,
         groupId: selectedGroupId || null,
         userId: currentUserId,
-        receipientId: selectedUserId
+        receiverId: selectedUserId
       }
-      console.log('obj', obj);
+      //console.log('obj', obj);
       const fileInput= document.getElementById('chatFile');
       const file = fileInput.files[0];
       const formData = new FormData();
@@ -238,15 +226,16 @@ async function chatData(event){
 
       try{
         const token= localStorage.getItem('token');
-        const response=await axios.post('http://localhost:3000/chat', formData, {
+        const response=await axios.post('http://localhost:3000/chat', obj, {
           headers :{
             'Authorization': token,
-            'Content-Type': 'multipart/form-data'
+            //'Content-Type': 'multipart/form-data'
           }
           })
-        console.log(response.data);
+        //console.log(response.data);
         sendMessage(obj)
-        fetchandShowData(response.data);
+        document.getElementById('message').value= "";
+        //fetchandShowData(response.data);
       }catch(err){
         console.log(err)
       }
@@ -255,7 +244,7 @@ async function chatData(event){
 
   window.addEventListener('DOMContentLoaded', async()=>{
     //fetchandShowData();
-    setInterval(showChats, 2000);
+    setInterval(showChats, 500);
     localStorage.removeItem('selectedGroupId')
     localStorage.removeItem('selectedUserId')
   }
@@ -283,11 +272,11 @@ async function chatData(event){
       try{
       const token=localStorage.getItem('token')           
       const response= await axios.get(url, { headers: {"Authorization" : token} }) 
-        console.log('Api res', response);
+      //console.log('Api res', response);
 
       if(response.status === 200){
       const data=response.data[dataKey];
-      console.log('data', data)
+      //console.log('data', data)
 
       const lastMessages = data.slice(-max_msg);
       localStorage.setItem('lastMessages', JSON.stringify(lastMessages));
@@ -303,11 +292,11 @@ async function chatData(event){
     let message= JSON.parse(localStorage.getItem('lastMessages'));
     const token = localStorage.getItem('token');
     const decodeToken = parseJwt(token);
-
+    //console.log("user", message)
     const messagescreen = document.getElementById('messagebox'); 
      messagescreen.innerHTML = '';
     message.forEach(chat => {     
-      if(chat.userId == decodeToken.userId){    
+      //if(chat.userId == decodeToken.userId){    
     const divItem=document.createElement('div')
       divItem.style.border='1px solid black'
       divItem.style.width='40%'
@@ -318,20 +307,38 @@ async function chatData(event){
 
       const listItem = document.createElement('li');
       listItem.style.listStyle='none'
-      listItem.textContent = chat.message; 
+      listItem.textContent = chat.text;
+      
+      const divList=document.createElement('div')
+      divList.classList='d-flex align-items-end justify-content-between mt-1'
+      divList.style.cssText='color: #8d8787; font-style: italic; font-size:small'
 
+      const msgof=document.createElement('p');
+      msgof.style.margin='0';
+      if(decodeToken.userId == chat.userId){
+        msgof.textContent='-you';
+        divItem.style.backgroundColor='rgb(194 225 255)';
+        divItem.style.position= 'relative';
+        divItem.style.left='400px'
+      }else if(chat.user){
+        msgof.textContent=chat.user.name;
+      }
+      
       const time=document.createElement('p')
         time.style.margin='0px'
         time.style.padding='0px'
-        time.classList='text-end'
+        //time.classList='text-end'
         const createdAt = new Date(chat.createdAt); // Convert string to Date object
         const formattedTime = `${createdAt.getDate()}-${createdAt.getMonth() + 1} ${createdAt.getHours()}:${createdAt.getMinutes()}`;
         time.textContent = formattedTime;
 
+        divList.appendChild(msgof)
+        divList.appendChild(time);
+      listItem.append(divList);
       divItem.appendChild(listItem);
-      divItem.appendChild(time)
+      
       messagescreen.appendChild(divItem); 
-      }               
+      //}               
    })
           
 }
@@ -350,15 +357,16 @@ let max_user=5;
 async function userList(){
   try{
     const token= localStorage.getItem('token');
-    const decodedToken=parseJwt(token)
+    const decodedToken=parseJwt(token);
+    
     const parentElement= document.getElementById('friendlist');
-    const response= await axios.get('http://localhost:3000/chat/alluser');
+    const response= await axios.get('http://localhost:3000/alluser');
     const data= response.data.allUserData; 
     const allUserData= data.slice(-max_user);
     localStorage.setItem("allUserdetails", JSON.stringify(allUserData));
 
     if(response.status === 200){
-      console.log("userList data",data)
+      //console.log("userList data",data)
       const userimgdiv = document.getElementById('onlineuserimg');
       const useronlinename=document.getElementById('onlineusername')
       
@@ -366,14 +374,10 @@ async function userList(){
         if(user.name !== decodedToken.name){
           const img=document.createElement('i')
             img.classList="fa-solid fa-circle-user fs-2 me-2"          
-            img.style.padding='0px 0px'
-            img.style.color='#206ef3'
+            img.style.color='#2d5c4b'
 
-            const divItem = document.createElement('li');              
-                divItem.style.display = 'block'; 
-                divItem.style.padding = '5px 10px';
-                divItem.style.margin = '0px 5px';
-                divItem.style.border = '1px 0px';
+            const divItem = document.createElement('div'); 
+            divItem.classList= 'list-group-item d-flex align-items-center py-2'            
 
               divItem.appendChild(img)
 
@@ -386,7 +390,8 @@ async function userList(){
                 anchorTag.textContent = user.name;
                 anchorTag.setAttribute("data-type", "user");
                 // Append the anchor tag to the list item
-                anchorTag.addEventListener('click', () => {
+                divItem.addEventListener('click', () => {
+                  //console.log("click")
                     localStorage.setItem('selectedUserId', user.id);
                     localStorage.removeItem('selectedGroupId');
                     
@@ -394,7 +399,7 @@ async function userList(){
                     const userchilddiv = document.createElement('h6');
                     const usersubchild=document.createElement('h6')
                     userchildimg.classList = 'fa-solid fa-circle-user fs-1';
-                    userchildimg.style.color='#206ef3'
+                    userchildimg.style.cssText='color: rgb(198 68 98);margin:10px'
                     userchilddiv.style.textTransform='uppercase'
                     userchilddiv.textContent = user.name;
                     userchilddiv.classList = 'me-4';
@@ -404,12 +409,18 @@ async function userList(){
                     // Clear previous user information
                     userimgdiv.innerHTML = '';
                     useronlinename.innerHTML = '';
-                    userdivright.innerHTML = '';
+                    
                     
                     userimgdiv.appendChild(userchildimg);
                     useronlinename.appendChild(userchilddiv);
-                    userdivright.appendChild(usersubchild)
-                    fetchAndDisplayChatData();
+                    //userdivright.appendChild(usersubchild)
+                    fetchandShowData();
+                    
+                    const messagescreen = document.getElementById('messagebox');
+                    messagescreen.innerHTML = '';
+
+                    showChats();
+
                 });
 
                 divItem.appendChild(anchorTag);         
@@ -417,6 +428,16 @@ async function userList(){
                 parentElement.appendChild(divItem);
                 const lineBreak = document.createElement('br');
                 parentElement.appendChild(lineBreak);
+
+      // parentElement.innerHTML= `<div class="list-group-item d-flex align-items-center py-2">
+      //           <div class="col-2 d-flex">
+      //           <i class="bi-person-circle text-center fs-2"></i>
+      //           </div>
+      //           <div class="col-8 list ">
+      //           <h5 style="margin: 0;">${user.name}</h5>
+      //           <i class="bi bi-circle-fill " style="color: green; font-size: 13px;"> Online</i> 
+      //           </div>
+      //         </div>`
         }
       })
     }else{
@@ -426,7 +447,7 @@ async function userList(){
     console.log("error in userlist", err)
   }
 }
-userList();
+
 
 async function modal1(event){
         event.preventDefault();
@@ -440,24 +461,13 @@ async function modal1(event){
 
     }
 
-     function status1(event){
-        event.preventDefault();
-        var name=document.getElementById('statusupdate').value       
-
-        const obj={
-            name,
-        }        
-        localStorage.setItem('statusUpdate',JSON.stringify(obj)) 
-
-    }
-
 function userProfileVisible(){
     const token=localStorage.getItem('token')
         const decodeToken=parseJwt(token)       
-        console.log(decodeToken.name)
+        //console.log(decodeToken.name)
         const profilename=document.getElementById('userprofilename')
-        childelement=document.createElement('h6')
-        childelement.style.textTransform='Uppercase'
+        childelement=document.createElement('h5')
+        childelement.style.textTransform='capitalize'
         childelement.textContent=decodeToken.name
         profilename.appendChild(childelement)
 }
@@ -467,8 +477,8 @@ userProfileVisible()
 document.addEventListener("DOMContentLoaded", function() {
     const dropdownItemList = document.getElementById("dropdownItemList");
 
-    const items = JSON.parse(localStorage.getItem('alluserdetails'))
-            console.log("items>>",items)
+    const items = JSON.parse(localStorage.getItem('allUserdetails'))
+    //console.log("items>>",items)
     items.forEach(item => {
       const listItem = document.createElement("li");
       listItem.innerHTML = `
@@ -490,9 +500,9 @@ document.addEventListener("DOMContentLoaded", function() {
 async function createGroup(event){
         event.preventDefault();
     
-        var groupname=document.getElementById('groupname').value 
+        var groupname=document.getElementById('groupname').value;
+        console.log("groupname", groupname)
         const obj={
-            name,
             groupname,
             members: getCheckedMembers()
         }
@@ -529,19 +539,18 @@ function selectGroup(groupId) {
     localStorage.setItem('selectedGroupId', groupId);
     localStorage.removeItem('selectedUserId');
     socket.emit('join-group', groupId);  // Joining the group's WebSocket channel
-    fetchAndDisplayChatData();
-    updateChatUI();
+    fetchandShowData();
+    showChats();
 }
 
 
 
 
 async function getGroups() {
-    userlist();
-    const parentElement = document.getElementById('alluserlist');
+    userList();
+    const parentElement = document.getElementById('friendlist');
     const userimgdiv = document.getElementById('onlineuserimg');
     const useronlinename = document.getElementById('onlineusername');
-    const userdivright = document.getElementById('useronline');
     try {
         const token = localStorage.getItem('token');
         const response = await axios.get('http://localhost:3000/chat/getgroup', { headers: { 'Authorization': token } });
@@ -551,17 +560,12 @@ async function getGroups() {
         const groupbox = document.getElementById('groupdetails');
         data.forEach(group => {
             const img = document.createElement('i');
-            img.classList = "fa-solid fa-people-group fs-4 me-2";
-            img.style.border = '1px solid #00a884';
+            img.classList = "fa-solid fa-people-group fs-3 me-2";
+            img.style.border = '1px solid #2d5c4b';
             img.style.borderRadius = '50%';
-            img.style.color = '#00a884';
-            const divItem = document.createElement('li');
-            divItem.style.display = 'block';
-            divItem.style.padding = '5px 10px';
-            divItem.style.margin = '0px 5px';
-            divItem.style.border = '1px 0px';
-            divItem.style.color = "black";
-            divItem.classList.add('group-item');
+            img.style.color = '#2d5c4b';
+            const divItem = document.createElement('div');
+            divItem.classList= 'list-group-item d-flex align-items-center py-2'
 
             const anchorTag = document.createElement('a');
             anchorTag.style.textDecoration = 'none';
@@ -569,23 +573,36 @@ async function getGroups() {
             anchorTag.style.fontWeight = 'bold';
             anchorTag.style.textTransform = 'capitalize';
             anchorTag.classList.add('group-item');
-            anchorTag.href = '#' + group.groupname.toLowerCase();
-            anchorTag.textContent = group.groupname;
+            anchorTag.href = '#' + group.name.toLowerCase();
+            anchorTag.textContent = group.name;
             anchorTag.setAttribute("data-type", "group");
 
-            anchorTag.addEventListener('click',  () => {
+            divItem.addEventListener('click',  () => {
                 selectGroup(group.id);
-                // userimgdiv.appendChild(img)
-                // useronlinename.appendChild(divItem)
-                localStorage.setItem('selectedGroupId', group.id);
-                localStorage.removeItem('selectedUserId');
+                //console.log("group detail", group)
+
+                const userchildimg = document.createElement('i');
+                const userchilddiv = document.createElement('h6');
+                userchildimg.classList = 'fa-solid fa-people-group fs-1';
+                userchildimg.style.cssText= 'color: rgb(198 68 98);border: 1px solid;border-radius: 50%;margin: 10px;'
+                userchilddiv.style.textTransform='uppercase'
+                userchilddiv.textContent = group.name;
+                userchilddiv.classList = 'me-4';
+                    
+                    // Clear previous user information
+                userimgdiv.innerHTML = '';
+                useronlinename.innerHTML = '';
+                    //userdivright.innerHTML = '';
+                 userimgdiv.appendChild(userchildimg)
+                 useronlinename.appendChild(userchilddiv)
+                
                 // Clear chat UI
                 const messagescreen = document.getElementById('messagebox');
                 messagescreen.innerHTML = '';
                 // Fetch and display chat data
-                fetchAndDisplayChatData();
+                fetchandShowData();
                 // Update chat UI with the latest messages
-                updateChatUI();
+                showChats();
             });
 
             divItem.appendChild(img);
@@ -602,22 +619,14 @@ async function getGroups() {
 getGroups();
 
 
-
-updatestatus()    
-function updatestatus(){
-    const savedStatus = JSON.parse(localStorage.getItem('statusUpdate'));
-    const status = document.getElementById('profilestatusupdate');
-    status.textContent = savedStatus.name;
+function logout() { 
+  console.log("logout"); 
+    // localStorage.removeItem('selectedGroupId');
+    // localStorage.removeItem('selectedUserId');
+    // localStorage.removeItem('token');
+    localStorage.clear();
+    socket.disconnect();
 }
-
-function logout() {
-        socket.disconnect();
-    
-    localStorage.removeItem('selectedGroupId');
-    localStorage.removeItem('selectedUserId');
-    localStorage.removeItem('token');
-}
-document.getElementById('logoutButton').addEventListener('click', logout);
 
   </script>
     

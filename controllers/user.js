@@ -29,7 +29,7 @@ exports.userSignup= async(req, res)=>{
                 email: email,
                 password: hash
             });
-            console.log("user data", data);
+            //console.log("user data", data);
             res.status(200).json({message: "user created"})
         })
     }catch(err){
@@ -40,7 +40,7 @@ exports.userSignup= async(req, res)=>{
 
 
 function generateAccessToken(id, name){
-    return jwt.sign({userId: id, name: name}, "token9876354igjhf")
+    return jwt.sign({userId: id, name: name}, "nhhdhh8ivt5dc")
 }
 
 exports.userLogin= async(req, res)=>{

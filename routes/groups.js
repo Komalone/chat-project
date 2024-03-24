@@ -1,7 +1,7 @@
 const express=require('express')
 const router=express.Router()
 
-const groupController=require('../controller/groups')
+const groupController=require('../controllers/groups')
 const authentication=require('../middleware/auth')
 
 const cors=require('cors');

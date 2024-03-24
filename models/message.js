@@ -1,7 +1,7 @@
 const Sequelize=require('sequelize')
 const sequelize=require('../util/tickTalk')
 
-const GroupChat=sequelize.define('groupchat',{
+const Message=sequelize.define('message',{
     id:{
         type:Sequelize.INTEGER,
         autoIncrement:true,
@@ -9,11 +9,19 @@ const GroupChat=sequelize.define('groupchat',{
         primaryKey:true,
         unique:true
     },   
-    groupname:{
+    text:{
         type:Sequelize.STRING,   
         allowNull:false,
+    },
+    groupId: {
+        type: Sequelize.INTEGER,
+        allowNull: true
+    },
+    receiverId: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
     }
 
 })
 
-module.exports=GroupChat;
+module.exports= Message;

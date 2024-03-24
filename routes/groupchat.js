@@ -1,13 +1,12 @@
 const express=require('express')
 const router=express.Router()
-const chatController=require('../controller/chat')
-const groupController=require('../controller/groupchat')
+const groupController=require('../controllers/groupChats')
 
 const path=require('path')
 const cors=require('cors');
 router.use(cors())
 router.use(express.json());
 
-router.get('/chat/group',groupController.getAllUser)
+router.get('/chat/group',groupController.getAllGroupUser)
 
 module.exports=router;

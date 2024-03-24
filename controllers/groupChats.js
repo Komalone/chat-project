@@ -1,6 +1,6 @@
 const User= require('../models/user');
 
-exports.getAllUser=async (req,res)=>{
+exports.getAllGroupUser=async (req,res)=>{
     try{
         const groupUser=await User.findAll()   
         res.status(200).json({ allUser: groupUser});                     

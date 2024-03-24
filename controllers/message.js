@@ -2,7 +2,7 @@ const express= require('express');
 const router= express.Router()
 const Sequelize= require('sequelize');
 
-const Chat= require('../models/chat');
+const Message= require('../models/message');
 const User= require('../models/user');
 const UserGroup= require('../models/userGroup')
 const sequelize=require('../util/tickTalk')
@@ -11,13 +11,16 @@ const cors=require('cors');
 router.use(cors())
 router.use(express.json());
 
-exports.postChat=async (req, res)=>{
+exports.postMessage=async (req, res)=>{
+    console.log('message posted')
     const t= await sequelize.transaction();
     try{
-        const message= req.body.message;
-        const chatId = req.body.chatId
+        console.log(req.body);
+        const text= req.body.text;
+        //const chatId = req.body.chatId
         const groupId = req.body.groupId;
-        const recipientId=req.body.recipientId
+        const receiverId=Number(req.body.receiverId);
+        //console.log('recipientid', receiverId);
 
         if(req.files && req.files.file){
             const file= req.files.file;
@@ -31,12 +34,11 @@ exports.postChat=async (req, res)=>{
             const fileURL= s3Response.Location;
         }
 
-        const data= await Chat.create({
-            message: message,
+        const data= await Message.create({
+            text: text,
             userId :req.user.id,
-            chatId: chatId,
             groupId: groupId,
-            recipientId:recipientId
+            receiverId:receiverId
         }, {transaction: t});
 
         const user= await User.findByPk(req.user.id);
@@ -52,9 +54,9 @@ exports.postChat=async (req, res)=>{
     }
 }
 
-exports.getChat=async (req,res)=>{
+exports.getMessage=async (req,res)=>{
     try{
-        const chatdata= await Chat.findAll({
+        const chatdata= await Message.findAll({
             where:{userId:req.user.id}
         })
         res.status(200).json({allChatData:chatdata})
@@ -81,7 +83,7 @@ exports.getGroupMessages= async(req, res)=>{
             return res.status(403).json({ message: "User is not a member of the requested group." });
         }
 
-        const messages = await Chat.findAll({
+        const messages = await Message.findAll({
             where: {
                 groupId: groupId
             },
@@ -100,17 +102,17 @@ exports.getUserChats= async(req, res)=>{
         const userId = req.user.id; // Current logged-in user's ID
         const otherUserId = req.params.userId; // ID of the other user
 
-        const chatData = await Chat.findAll({
+        const messageData = await Message.findAll({
             where: {
                 [Sequelize.Op.or]: [
-                    { userId: userId, recipientId: otherUserId },
-                    { userId: otherUserId, recipientId: userId }
+                    { userId: userId, receiverId: otherUserId },
+                    { userId: otherUserId, receiverId: userId }
                 ]
             },
             order: [['createdAt', 'ASC']] 
         });
 
-        return res.status(200).json({ messages: chatData });
+        return res.status(200).json({ messages: messageData });
     } catch (err) {
         console.log(err);
       return  res.status(500).json({ error: err });

@@ -5,7 +5,8 @@ const User= require('../models/user');
 const authenticate= (req, res, next)=>{
     try{
         const token= req.header('Authorization');
-        const user= jwt.verify(token, 'token9876354igjhf');
+        //console.log(token);
+        const user= jwt.verify(token, 'nhhdhh8ivt5dc');
         console.log('user from auth file', user)
         User.findByPk(user.userId).then(user=>{
             req.user= user;
